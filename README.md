@@ -5,7 +5,7 @@ Extract cropped images from imageLabeler .mat output file
 % Utility function
 % imageLabeler exported .mat files => cropped images
 % Make sure you report any errors, problems at:
-% deak.zsolt@student.ms.sapientia.ro
+% zsolt.deak01@gmail.com
 % Version: 0.1b
 % Not tested
 % Usage:
