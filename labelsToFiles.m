@@ -2,8 +2,8 @@
 % Utility function
 % imageLabeler exported .mat files => cropped images
 % Make sure you report any errors, problems at:
-% deak.zsolt@student.ms.sapientia.ro
-% Version: 0.1b
+% zsolt.deak01@gmail.com
+% Version: 0.2b
 % Not tested
 % Usage:
 %   Save the labelsToFiles.m to your working directory
