@@ -38,12 +38,17 @@ function [] = labelsToFiles()
                 currentImage = imread(currentContent.gTruth.DataSource.Source{imageIndex}); %Load the original image 
                 content = outPutImageData{imageIndex, 1}; %positions of the cropped images
                 contentLength = height(content); %length of the positions ~ how many cropped images we have
+                [rows, columns, numberOfColorChannels] = size(currentImage);
                 for outPutImageIndex=1 : contentLength
-                    if content(outPutImageIndex, 1)+content(outPutImageIndex, 3) >= 0
-                        outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4), content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3) -1, :); % crop the image
-                    else
-                        outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4), content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3), :); % crop the image
+                    outOfRowIndex = 0; %Not exceed image size
+                    outOfColumnIndex = 0; %Not exceed image size
+                    if content(outPutImageIndex, 1)+content(outPutImageIndex, 3) > columns
+                        outOfColumnIndex = 1; %Exceed image size
                     end
+                    if content(outPutImageIndex, 2)+content(outPutImageIndex, 4) > rows
+                        outOfRowIndex = 1; %Exceed image size
+                    end
+                    outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4) - outOfRowIndex, content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3) - outOfColumnIndex, :); % crop the image
                     imwrite(outPutImage, currentMatFile + "_" + lower(currentLabelName) + "_" + imageIndex + "_" + outPutImageIndex + ".png"); %create the cropped file
                     %image(outPut(j,2):outPut(j, 2)+outPut(j, 4), outPut(j,1):outPut(j,1)+outPut(j,3), :);
                 end
