@@ -3,7 +3,7 @@
 % imageLabeler exported .mat files => cropped images
 % Make sure you report any errors, problems at:
 % zsolt.deak01@gmail.com
-% Version: 0.2b
+% Version: 0.3b
 % Not tested
 % Usage:
 %   Save the labelsToFiles.m to your working directory
@@ -14,6 +14,8 @@
 %CHANGELOG:
 %   2023.04.24 - 0.1b -> 0.2b
 %   Output image type changed from jpg to png
+%   2023.05.13 - 0.2b -> 0.3b
+%   Index exceeds array bounds
 
 function [] = labelsToFiles()
     directoryFiles = dir ("*.mat"); %choose all files from the current directory which ends in .mat
@@ -37,7 +39,11 @@ function [] = labelsToFiles()
                 content = outPutImageData{imageIndex, 1}; %positions of the cropped images
                 contentLength = height(content); %length of the positions ~ how many cropped images we have
                 for outPutImageIndex=1 : contentLength
-                    outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4), content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3), :); % crop the image
+                    if content(outPutImageIndex, 1)+content(outPutImageIndex, 3) >= 0
+                        outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4), content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3) -1, :); % crop the image
+                    else
+                        outPutImage = currentImage(content(outPutImageIndex, 2):content(outPutImageIndex, 2)+content(outPutImageIndex, 4), content(outPutImageIndex, 1):content(outPutImageIndex, 1)+content(outPutImageIndex, 3), :); % crop the image
+                    end
                     imwrite(outPutImage, currentMatFile + "_" + lower(currentLabelName) + "_" + imageIndex + "_" + outPutImageIndex + ".png"); %create the cropped file
                     %image(outPut(j,2):outPut(j, 2)+outPut(j, 4), outPut(j,1):outPut(j,1)+outPut(j,3), :);
                 end
